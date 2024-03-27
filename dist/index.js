@@ -76086,6 +76086,37 @@ function addFederationDirectivesToSchema(resultSchema, fieldSetScalar) {
     }));
 }
 /**
+ * Import argument for the link directive applied to the schema
+ */
+const IMPORT_DIRECTIVE_ARGUMENT = {
+    kind: graphql_1.Kind.ARGUMENT,
+    name: {
+        kind: graphql_1.Kind.NAME,
+        value: "import"
+    },
+    value: {
+        kind: graphql_1.Kind.LIST,
+        values: ["@shareable", "@key", "@inaccessible", "FieldSet"].map(value => ({
+            kind: graphql_1.Kind.STRING,
+            value
+        }))
+    }
+};
+/**
+ * URL argument for the link directive applied to the schema
+ */
+const URL_DIRECTIVE_ARGUMENT = {
+    kind: graphql_1.Kind.ARGUMENT,
+    name: {
+        kind: graphql_1.Kind.NAME,
+        value: "url"
+    },
+    value: {
+        kind: graphql_1.Kind.STRING,
+        value: "https://specs.apollo.dev/federation/v2.5"
+    }
+};
+/**
  * Sets the federation schema directive on the given schema
  *
  * @param schema the schema to set the federation schema directive on
@@ -76100,19 +76131,7 @@ function setFederationSchemaDirective(schema) {
                     kind: graphql_1.Kind.NAME,
                     value: "link"
                 },
-                arguments: [
-                    {
-                        kind: graphql_1.Kind.ARGUMENT,
-                        name: {
-                            kind: graphql_1.Kind.NAME,
-                            value: "url"
-                        },
-                        value: {
-                            kind: graphql_1.Kind.STRING,
-                            value: "https://specs.apollo.dev/federation/v2.5"
-                        }
-                    }
-                ]
+                arguments: [URL_DIRECTIVE_ARGUMENT, IMPORT_DIRECTIVE_ARGUMENT]
             }
         ]
     };
