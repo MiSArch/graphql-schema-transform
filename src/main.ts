@@ -247,14 +247,7 @@ function removeFederationDirectivesFromRootObjects(schema: GraphQLSchema): Graph
  */
 function generateFederationDirective(joinTypeArguments: Map<string, ConstArgumentNode>): ConstDirectiveNode {
     if (joinTypeArguments.has("key")) {
-        return {
-            kind: Kind.DIRECTIVE,
-            name: {
-                kind: Kind.NAME,
-                value: "key"
-            },
-            arguments: [joinTypeArguments.get("key"), joinTypeArguments.get("resolvable")]
-        }
+        return generateFederationKeyDirective(joinTypeArguments)
     } else {
         return {
             kind: Kind.DIRECTIVE,
@@ -263,6 +256,32 @@ function generateFederationDirective(joinTypeArguments: Map<string, ConstArgumen
                 value: "shareable"
             }
         }
+    }
+}
+
+/**
+ * Generates the federation key directive for a type
+ *
+ * @param joinTypeArguments arguments of the join_type directive
+ * @returns the generated federation key directive
+ */
+function generateFederationKeyDirective(joinTypeArguments: Map<string, ConstArgumentNode>): ConstDirectiveNode {
+    return {
+        kind: Kind.DIRECTIVE,
+        name: {
+            kind: Kind.NAME,
+            value: "key"
+        },
+        arguments: [
+            {
+                ...joinTypeArguments.get("key"),
+                name: {
+                    kind: Kind.NAME,
+                    value: "fields"
+                }
+            },
+            joinTypeArguments.get("resolvable")
+        ]
     }
 }
 

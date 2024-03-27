@@ -76198,14 +76198,7 @@ function removeFederationDirectivesFromRootObjects(schema) {
  */
 function generateFederationDirective(joinTypeArguments) {
     if (joinTypeArguments.has("key")) {
-        return {
-            kind: graphql_1.Kind.DIRECTIVE,
-            name: {
-                kind: graphql_1.Kind.NAME,
-                value: "key"
-            },
-            arguments: [joinTypeArguments.get("key"), joinTypeArguments.get("resolvable")]
-        };
+        return generateFederationKeyDirective(joinTypeArguments);
     }
     else {
         return {
@@ -76216,6 +76209,31 @@ function generateFederationDirective(joinTypeArguments) {
             }
         };
     }
+}
+/**
+ * Generates the federation key directive for a type
+ *
+ * @param joinTypeArguments arguments of the join_type directive
+ * @returns the generated federation key directive
+ */
+function generateFederationKeyDirective(joinTypeArguments) {
+    return {
+        kind: graphql_1.Kind.DIRECTIVE,
+        name: {
+            kind: graphql_1.Kind.NAME,
+            value: "key"
+        },
+        arguments: [
+            {
+                ...joinTypeArguments.get("key"),
+                name: {
+                    kind: graphql_1.Kind.NAME,
+                    value: "fields"
+                }
+            },
+            joinTypeArguments.get("resolvable")
+        ]
+    };
 }
 /**
  * Finds a join directive on an object type
