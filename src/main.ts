@@ -131,6 +131,39 @@ function addFederationDirectivesToSchema(
 }
 
 /**
+ * Import argument for the link directive applied to the schema
+ */
+const IMPORT_DIRECTIVE_ARGUMENT: ConstArgumentNode = {
+    kind: Kind.ARGUMENT,
+    name: {
+        kind: Kind.NAME,
+        value: "import"
+    },
+    value: {
+        kind: Kind.LIST,
+        values: ["@shareable", "@key", "@inaccessible", "FieldSet"].map(value => ({
+            kind: Kind.STRING,
+            value
+        }))
+    }
+}
+
+/**
+ * URL argument for the link directive applied to the schema
+ */
+const URL_DIRECTIVE_ARGUMENT: ConstArgumentNode = {
+    kind: Kind.ARGUMENT,
+    name: {
+        kind: Kind.NAME,
+        value: "url"
+    },
+    value: {
+        kind: Kind.STRING,
+        value: "https://specs.apollo.dev/federation/v2.5"
+    }
+}
+
+/**
  * Sets the federation schema directive on the given schema
  *
  * @param schema the schema to set the federation schema directive on
@@ -145,19 +178,7 @@ function setFederationSchemaDirective(schema: GraphQLSchema) {
                     kind: Kind.NAME,
                     value: "link"
                 },
-                arguments: [
-                    {
-                        kind: Kind.ARGUMENT,
-                        name: {
-                            kind: Kind.NAME,
-                            value: "url"
-                        },
-                        value: {
-                            kind: Kind.STRING,
-                            value: "https://specs.apollo.dev/federation/v2.5"
-                        }
-                    }
-                ]
+                arguments: [URL_DIRECTIVE_ARGUMENT, IMPORT_DIRECTIVE_ARGUMENT]
             }
         ]
     }
